@@ -1,5 +1,6 @@
 package com.lsadf.yaproc.file.handler.input;
 
+import com.lsadf.yaproc.exception.UnsupportedFileFormatException;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileData;
 import com.lsadf.yaproc.file.FileFormat;
@@ -21,9 +22,9 @@ public class YamlInputFileHandler implements InputFileHandler {
             System.out.println("YAML file");
         }
         if (next == null) {
-            return next.handleFile(fileData);
+            throw new UnsupportedFileFormatException("Unsupported file format.");
         }
-        return null;
+        return next.handleFile(fileData);
     }
 
     @Override

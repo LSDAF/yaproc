@@ -1,5 +1,6 @@
 package com.lsadf.yaproc.file.handler.input;
 
+import com.lsadf.yaproc.exception.UnsupportedFileFormatException;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileData;
 import com.lsadf.yaproc.file.FileFormat;
@@ -23,14 +24,21 @@ public class PropertiesInputFileHandler implements InputFileHandler {
         if (Arrays.stream(getType().getExtensions()).anyMatch(ext -> ext.equalsIgnoreCase(type))) {
             Properties props = new Properties();
             props.load(new StringReader(fileData.getContent()));
-            
+
             ContentMap contentMap = new ContentMap();
             props.forEach((key, value) -> contentMap.put(key.toString(), value));
             return contentMap;
-        } else if (nextHandler != null) {
-            return nextHandler.handleFile(fileData);
         }
-        return null;
+        if (nextHandler == null) {
+            throw new UnsupportedFileFormatException("Unsupported file format.");
+        }
+        return nextHandler.handleFile(fileData);
+
+
+
+
+
+
     }
 
     @Override
