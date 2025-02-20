@@ -114,7 +114,6 @@
                         </goals>
                         <configuration>
                             <finalName>yaproc</finalName>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
