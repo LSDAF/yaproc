@@ -9,34 +9,50 @@ import com.lsadf.yaproc.file.FileFormat;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * A file handler that processes JSON input files.
+ *
+ * <p>The handler uses the {@link JsonMapper} to parse the content of JSON files
+ * into a {@link ContentMap}. It supports file types as defined by {@link FileFormat#JSON}.
+ *
+ * <p>If the JSON file cannot be processed, the request can be passed to a subsequent
+ * handler in a chain of responsibility. If no subsequent handler is set, an
+ * {@link UnsupportedFileFormatException} will be thrown.
+ */
 public class JsonInputFileHandler implements InputFileHandler {
 
-  private final JsonMapper jsonMapper;
-  private InputFileHandler next;
+    private InputFileHandler nextHandler;
+    private final JsonMapper jsonMapper;
 
-  public JsonInputFileHandler() {
-    this.jsonMapper = new JsonMapper();
-  }
-
-  @Override
-  public FileFormat getType() {
-    return FileFormat.JSON;
-  }
-
-  @Override
-  public ContentMap handleFile(FileData fileData) throws IOException {
-    if (Arrays.stream(getType().getExtensions()).anyMatch(ext -> ext.equalsIgnoreCase(fileData.getType()))) {
-      return this.jsonMapper.readValue(fileData.getContent(), ContentMap.class);
-    }
-    if (next == null) {
-      throw new UnsupportedFileFormatException("Unsupported file format.");
+    public JsonInputFileHandler() {
+        this.jsonMapper = new JsonMapper();
     }
 
-    return next.handleFile(fileData);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileFormat getType() {
+        return FileFormat.JSON;
+    }
 
-  @Override
-  public void setNextHandler(InputFileHandler nextHandler) {
-    this.next = nextHandler;
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ContentMap handleFile(FileData fileData) throws IOException {
+        if (Arrays.stream(getType().getExtensions()).anyMatch(ext -> ext.equalsIgnoreCase(fileData.getType()))) {
+            return this.jsonMapper.readValue(fileData.getContent(), ContentMap.class);
+        }
+        if (nextHandler == null) {
+            throw new UnsupportedFileFormatException("Unsupported file format.");
+        }
+
+        return nextHandler.handleFile(fileData);
+    }
+
+    @Override
+    public void setNextHandler(InputFileHandler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
 }

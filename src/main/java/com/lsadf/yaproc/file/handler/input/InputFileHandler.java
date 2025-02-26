@@ -21,4 +21,13 @@ public interface InputFileHandler extends FileHandler {
      * @throws IOException If there's an error reading or processing the file
      */
     ContentMap handleFile(FileData fileData) throws IOException;
+
+    /**
+     * Sets the next handler in the chain of responsibility.
+     * This allows the current handler to delegate the processing
+     * of unsupported file types to the next handler.
+     *
+     * @param nextHandler the next {@link FileHandler} in the chain.
+     */
+    void setNextHandler(InputFileHandler nextHandler);
 }

@@ -21,4 +21,13 @@ public interface OutputFileHandler extends FileHandler {
      * @throws IOException if an error occurs during file handling
      */
     void handleFile(String outputFile, ContentMap content, boolean force) throws IOException;
+
+    /**
+     * Sets the next handler in the chain of responsibility.
+     * This allows the current handler to delegate the processing
+     * of unsupported file types to the next handler.
+     *
+     * @param nextHandler the next {@link FileHandler} in the chain.
+     */
+    void setNextHandler(OutputFileHandler nextHandler);
 }
