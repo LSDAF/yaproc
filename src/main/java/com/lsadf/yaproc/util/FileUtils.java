@@ -3,8 +3,13 @@ package com.lsadf.yaproc.util;
 import com.lsadf.yaproc.file.FileData;
 import lombok.experimental.UtilityClass;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class FileUtils {
@@ -17,13 +22,19 @@ public class FileUtils {
   public static FileData readFile(String filename) throws IOException {
     Path path = Paths.get(filename);
     // Read file content as a string
-    String content = Files.readString(path);
-    // Determine type
-    String type = FileUtils.getFileExtension(filename);
-    // Get filename
-    String name = path.getFileName().toString();
+    var fileInputStream = new FileInputStream(path.toFile());
+    var inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.ISO_8859_1);
 
-    return new FileData(name, type, content);
+    try (var reader = new BufferedReader(inputStreamReader)) {
+      String content = reader.lines().collect(Collectors.joining("\n"));
+
+      // Determine type
+      String type = FileUtils.getFileExtension(filename);
+      // Get filename
+      String name = path.getFileName().toString();
+
+      return new FileData(name, type, content);
+    }
   }
 
   /**
