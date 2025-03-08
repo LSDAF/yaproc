@@ -1,9 +1,9 @@
-package com.lsadf.yaproc;
+package com.lsadf.yaproc.util;
 
 import com.lsadf.yaproc.file.FileData;
-import com.lsadf.yaproc.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -16,20 +16,18 @@ class FileUtilsTests {
 
     @Test
     void testReadFileWithValidFilePath() {
-        String filePath = "test-data/inexisting";
-        assertThrows(FileNotFoundException.class, () -> FileUtils.readFile(filePath));
+        String filePath = "target/test-data/inexisting";
+        File path = new File(filePath);
+        assertThrows(FileNotFoundException.class, () -> FileUtils.readFile(path));
     }
 
     @Test
     void testReadFileWithValidFile() throws IOException {
-        String filePath = "test-data/test.json";
-        FileData fileData = FileUtils.readFile(filePath);
-        assertThat(fileData.getContent()).isEqualTo("{\n  \"test\": \"test\"\n}\n");
+        String filePath = "target/test-data/inputs/test.json";
+        File path = new File(filePath);
+        FileData fileData = FileUtils.readFile(path);
+        assertThat(fileData.getContent()).isEqualTo("{\n  \"test\": \"test\"\n}");
         assertThat(fileData.getType()).isEqualTo("json");
     }
-
-    // Test for writeFile with invalid file path
-
-    // Test for getFileExtension with invalid file path
 
 }

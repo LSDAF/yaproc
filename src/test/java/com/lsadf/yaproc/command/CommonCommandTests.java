@@ -1,12 +1,13 @@
-package com.lsadf.yaproc;
+package com.lsadf.yaproc.command;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
+import com.lsadf.yaproc.YaprocApplication;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class YaprocCommonTests {
+class CommonCommandTests {
   @Test
   void testHelp() throws Exception {
     int status =

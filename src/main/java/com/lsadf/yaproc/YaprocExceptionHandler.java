@@ -8,7 +8,7 @@ public class YaprocExceptionHandler implements CommandLine.IExecutionExceptionHa
   public int handleExecutionException(
       Exception e, CommandLine commandLine, CommandLine.ParseResult parseResult) throws Exception {
     if (e instanceof java.io.FileNotFoundException) {
-      return CommandLine.ExitCode.USAGE;
+      return CommandLine.ExitCode.SOFTWARE;
     } else if (e instanceof UnsupportedFileFormatException) {
       return 3;
     }
