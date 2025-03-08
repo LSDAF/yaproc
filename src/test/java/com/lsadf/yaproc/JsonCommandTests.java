@@ -6,7 +6,7 @@ import picocli.CommandLine;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class YaprocJsonCommandTests {
+class JsonCommandTests {
 
   @Test
   void testJsonCommandWithNoArguments() throws Exception {
@@ -46,10 +46,10 @@ class YaprocJsonCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"json", "nonexisting.properties", "test.json"});
+              YaprocApplication.main(new String[] {"json", "target/test-data/inputs/nonexisting.properties", "target/test-data/outputs/test.json"});
             });
 
-    assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
+    assertThat(status).isEqualTo(CommandLine.ExitCode.SOFTWARE);
   }
 
   @Test
@@ -57,7 +57,7 @@ class YaprocJsonCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"json", "test.properties", "test.json"});
+              YaprocApplication.main(new String[] {"json", "target/test-data/inputs/test.properties", "target/test-data/outputs/test_output.json", "-fdv"});
             });
 
     assertThat(status).isZero();

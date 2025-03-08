@@ -6,7 +6,7 @@ import picocli.CommandLine;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class YaprocCommonTests {
+class CommonCommandTests {
   @Test
   void testHelp() throws Exception {
     int status =
