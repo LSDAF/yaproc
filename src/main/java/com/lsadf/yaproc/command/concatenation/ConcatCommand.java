@@ -9,6 +9,7 @@ import com.lsadf.yaproc.util.FileUtils;
 import com.lsadf.yaproc.util.ValidationUtils;
 import picocli.CommandLine;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,15 +18,15 @@ import java.util.logging.Logger;
         aliases = {"c", "concat"},
         description = "Concatenates multiple files of the same type into a single output file"
 )
-public class ConcatCommand extends ACommand<List<String>> implements YaprocCommand<List<String>> {
+public class ConcatCommand extends ACommand<List<File>> implements YaprocCommand<List<File>> {
 
     private static final Logger LOGGER = Logger.getLogger(ConcatCommand.class.getName());
 
-    @CommandLine.Parameters(index = "0", description = "Output file")
-    private String output;
+    @CommandLine.Parameters(arity = "2..*", description = "Command parameters list")
+    private List<File> parameters;
 
-    @CommandLine.Parameters(index = "1..*", description = "Input files")
-    private List<String> inputList;
+    private List<File> input;
+    private File output;
 
     @Override
     public Logger getLogger() {
@@ -33,18 +34,20 @@ public class ConcatCommand extends ACommand<List<String>> implements YaprocComma
     }
 
     @Override
-    public List<String> getInput() {
-        return this.inputList;
+    public List<File> getInput() {
+        return this.input;
     }
 
     @Override
-    public String getOutput() {
+    public File getOutput() {
         return this.output;
     }
 
     @Override
     public void init() {
         this.outputFileHandler = FileHandlerUtils.initOutputFileHandlers();
+        this.output = parameters.get(0);
+        this.input = parameters.subList(1, parameters.size());
     }
 
     @Override
@@ -69,7 +72,7 @@ public class ConcatCommand extends ACommand<List<String>> implements YaprocComma
 
             // Concatenate files
             ContentMap concatMap = new ContentMap();
-            for (String file : inputList) {
+            for (File file : input) {
                 FileData fileData = FileUtils.readFile(file);
                 ContentMap result = inputFileHandler.handleFile(fileData);
                 concatMap.putAll(result);
@@ -93,12 +96,12 @@ public class ConcatCommand extends ACommand<List<String>> implements YaprocComma
     }
 
     private String validateFileExtensions() {
-        if (inputList.size() < 2) {
+        if (input.size() < 2) {
             throw new IllegalArgumentException("At least one input and one output file must be provided");
         }
 
-        String outputExtension = FileUtils.getFileExtension(inputList.get(0));
-        String inputExtension = FileUtils.getFileExtension(inputList.get(1));
+        String outputExtension = FileUtils.getFileExtension(input.get(0));
+        String inputExtension = FileUtils.getFileExtension(input.get(1));
 
         if (!outputExtension.equals(inputExtension)) {
             throw new IllegalArgumentException(
@@ -107,8 +110,8 @@ public class ConcatCommand extends ACommand<List<String>> implements YaprocComma
             );
         }
 
-        for (int i = 2; i < inputList.size(); i++) {
-            String currentExtension = FileUtils.getFileExtension(inputList.get(i));
+        for (int i = 2; i < input.size(); i++) {
+            String currentExtension = FileUtils.getFileExtension(input.get(i));
             if (!inputExtension.equals(currentExtension)) {
                 throw new IllegalArgumentException(
                         String.format("All files must have the same extension. Found different extensions: %s and %s",
@@ -118,6 +121,7 @@ public class ConcatCommand extends ACommand<List<String>> implements YaprocComma
         }
         return inputExtension;
     }
+
 
 
 }
