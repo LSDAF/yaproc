@@ -8,13 +8,17 @@ import com.lsadf.yaproc.util.FileUtils;
 import com.lsadf.yaproc.util.ValidationUtils;
 import picocli.CommandLine;
 
-public abstract class AConversionCommand extends ACommand<String> implements YaprocCommand<String> {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
-  @CommandLine.Parameters(index = "0", description = "Input file")
-  protected String input;
+public abstract class AConversionCommand extends ACommand<File> implements YaprocCommand<File> {
 
-  @CommandLine.Parameters(index = "1", description = "Output file")
-  protected String output;
+  @CommandLine.Parameters(arity = "2", description = "Command parameters list")
+  protected List<File> parameters;
+
+  protected File input;
+  protected File output;
 
   @Override
   public Integer call() throws Exception {
@@ -24,8 +28,13 @@ public abstract class AConversionCommand extends ACommand<String> implements Yap
         getLogger().info("Initializing command...");
       }
 
+      // Check if input exists
+      if (!input.exists()) {
+        throw new FileNotFoundException("Input file does not exist: " + input);
+      }
+
       // get input extension
-      String inputExtension = FileUtils.getFileExtension(getInput());
+      String inputExtension = FileUtils.getFileExtension(input);
       if (debug) {
         getLogger().info("Input file extension: " + inputExtension);
       }
@@ -64,12 +73,18 @@ public abstract class AConversionCommand extends ACommand<String> implements Yap
   }
 
   @Override
-  public String getInput() {
+  public File getInput() {
     return input;
   }
 
   @Override
-  public String getOutput() {
-    return this.output;
+  public File getOutput() {
+    return output;
+  }
+
+  @Override
+  public void init() {
+    this.input = parameters.get(0);
+    this.output = parameters.get(1);
   }
 }
