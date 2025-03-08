@@ -3,6 +3,7 @@ package com.lsadf.yaproc.file.handler.output;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.handler.FileHandler;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -15,12 +16,12 @@ public interface OutputFileHandler extends FileHandler {
     /**
      * Handles writing the specified content to the given output file.
      *
-     * @param outputFile the path to the output file where the content will be written
+     * @param outputFile the {@link File} object representing the output file where the content will be written
      * @param content    the content to be written to the output file
      * @param force      if {@code true}, forces overwriting the output file if it already exists
      * @throws IOException if an error occurs during file handling
      */
-    void handleFile(String outputFile, ContentMap content, boolean force) throws IOException;
+    void handleFile(File outputFile, ContentMap content, boolean force) throws IOException;
 
     /**
      * Sets the next handler in the chain of responsibility.
