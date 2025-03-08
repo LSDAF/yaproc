@@ -1,0 +1,13 @@
+{
+  "nested_object": {
+    "object_array": [
+      {
+        "index": 0
+      },
+      {
+        "index": 1
+      }
+    ],
+    "another_property": "Test"
+  }
+}
