@@ -1,7 +1,10 @@
 package com.lsadf.yaproc.command;
 
+import com.lsadf.yaproc.file.handler.input.InputFileHandler;
+import com.lsadf.yaproc.file.handler.output.OutputFileHandler;
 import picocli.CommandLine;
 
+import java.io.File;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
@@ -37,7 +40,7 @@ public interface YaprocCommand<I> extends Callable<Integer> {
    *
    * @return a {@link String} representing the output path
    */
-  String getOutput();
+  File getOutput();
 
   /**
    * Indicates whether the force option is enabled.
@@ -64,4 +67,23 @@ public interface YaprocCommand<I> extends Callable<Integer> {
    * Initializes the command, setting up any required resources or configurations.
    */
   void init();
+
+
+  /**
+   * Gets the input file handler associated with this command.
+   * The input file handler is responsible for processing input files and converting them into a usable format.
+   *
+   * @return an {@link InputFileHandler} instance specific to the command
+   */
+  InputFileHandler getInputFileHandler();
+
+  /**
+   * Gets the output file handler associated with this command.
+   * The output file handler is responsible for generating and writing the processed output file from the command execution.
+   *
+   * @return an {@link OutputFileHandler} instance specific to the command
+   */
+  OutputFileHandler getOutputFileHandler();
+
+
 }

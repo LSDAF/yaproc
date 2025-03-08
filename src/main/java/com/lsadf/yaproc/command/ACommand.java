@@ -41,4 +41,14 @@ public abstract class ACommand<I> implements YaprocCommand<I> {
     public boolean isVerbose() {
         return this.verbose;
     }
+
+    @Override
+    public OutputFileHandler getOutputFileHandler() {
+        return this.outputFileHandler;
+    }
+
+    @Override
+    public InputFileHandler getInputFileHandler() {
+        return this.inputFileHandler;
+    }
 }
