@@ -1,6 +1,7 @@
-package com.lsadf.yaproc;
+package com.lsadf.yaproc.command.conversion;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
+import com.lsadf.yaproc.YaprocApplication;
 import org.junit.jupiter.api.Test;
 import picocli.CommandLine;
 
