@@ -1,6 +1,7 @@
-package com.lsadf.yaproc.util;
+package com.lsadf.yaproc.test.util;
 
 import com.lsadf.yaproc.file.FileData;
+import com.lsadf.yaproc.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
