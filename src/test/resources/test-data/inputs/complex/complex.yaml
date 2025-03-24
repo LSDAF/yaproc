@@ -1,0 +1,25 @@
+app:
+  name: "TestApp"
+  config:
+    port: 8080
+    flags: [true, false, null]
+    nested:
+      values:
+        - id: 1
+          data: {x: 10, y: 20}
+          tags: ["a", "b"]
+        - id: 2
+          data: {x: -30, y: 1.5e2}
+          tags: ["c"]
+  settings:
+    db:
+      urls: ["host1:5432", "host2:5432"]
+      pool: {min: 5, max: 20}
+      auth: {user: "admin", roles: ["READ", "WRITE"]}
+    cache:
+      ttl: 3600
+      policy: "LRU"
+  text: |
+    multiple
+    lines here
+  mixed: [123, "str", true, null, {a: "b"}]

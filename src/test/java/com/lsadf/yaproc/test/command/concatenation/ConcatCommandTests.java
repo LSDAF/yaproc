@@ -1,4 +1,4 @@
-package com.lsadf.yaproc.command.concatenation;
+package com.lsadf.yaproc.test.command.concatenation;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
 import com.lsadf.yaproc.YaprocApplication;
