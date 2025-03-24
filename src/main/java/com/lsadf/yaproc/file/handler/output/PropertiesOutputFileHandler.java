@@ -3,7 +3,6 @@ package com.lsadf.yaproc.file.handler.output;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileFormat;
 import com.lsadf.yaproc.util.FileUtils;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +10,25 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * The {@code PropertiesOutputFileHandler} class is responsible for handling the writing of
+ * key-value content into a file in the {@code .properties} format. It implements the {@link
+ * OutputFileHandler} interface as part of a chain of responsibility for processing output files
+ * with varying formats.
+ *
+ * <p>This handler uses the {@link Properties} class to store and write the content defined in a
+ * {@link ContentMap} to the given output file. It ensures that the content is serialized in valid
+ * {@code .properties} format and includes robust error handling for scenarios like file existence,
+ * directory creation, and writing operations.
+ *
+ * <p>If the specified file type is not supported by this handler, it delegates the responsibility
+ * to the next handler in the chain, if present.
+ *
+ * <p>Features of this handler include: - Validation of file extension compatibility. - Ensures
+ * parent directories for the specified output file exist. - Throws an {@link IOException} if the
+ * file already exists and overwriting is not forced. - Supports chaining of multiple handlers via
+ * {@link #setNextHandler(OutputFileHandler)}.
+ */
 public class PropertiesOutputFileHandler implements OutputFileHandler {
 
   private OutputFileHandler nextHandler;
@@ -44,6 +62,7 @@ public class PropertiesOutputFileHandler implements OutputFileHandler {
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public void setNextHandler(OutputFileHandler nextHandler) {
     this.nextHandler = nextHandler;

@@ -1,13 +1,16 @@
 package com.lsadf.yaproc.util;
 
 import com.lsadf.yaproc.file.FileData;
-import lombok.experimental.UtilityClass;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.stream.Collectors;
+import lombok.experimental.UtilityClass;
 
+/**
+ * Utility class that provides functionality for file-related operations such as reading content,
+ * writing content, and retrieving file extensions.
+ */
 @UtilityClass
 public class FileUtils {
   /**
@@ -36,23 +39,23 @@ public class FileUtils {
   /**
    * Writes content to a file specified by its path.
    *
-   * @param file    the file to write to
+   * @param file the file to write to
    * @param content the content to write into the file
-   * @param force   whether to overwrite the file if it already exists
+   * @param force whether to overwrite the file if it already exists
    * @return true if the write operation is successful, false otherwise
    */
-  public static boolean writeFile(File file, String content, boolean force)
-          throws IOException {
+  public static boolean writeFile(File file, String content, boolean force) throws IOException {
     Path filepath = file.toPath();
     if (Files.exists(filepath) && !force) {
       throw new FileAlreadyExistsException(
-              "File already exists: " + filepath + ". Use -force to overwrite.");
+          "File already exists: " + filepath + ". Use -force to overwrite.");
     }
     Path parent = filepath.getParent();
     if (parent != null) {
       Files.createDirectories(parent);
     }
-    Files.writeString(filepath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    Files.writeString(
+        filepath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     return true;
   }
 
@@ -61,7 +64,7 @@ public class FileUtils {
    *
    * @param file the file object
    * @return the file extension (e.g., "json", "yaml", "properties") or an empty string if none is
-   * found
+   *     found
    */
   public static String getFileExtension(File file) {
     String filename = file.getName();

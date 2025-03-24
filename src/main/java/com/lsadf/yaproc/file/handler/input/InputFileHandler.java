@@ -3,7 +3,6 @@ package com.lsadf.yaproc.file.handler.input;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileData;
 import com.lsadf.yaproc.file.handler.FileHandler;
-
 import java.io.IOException;
 
 /**

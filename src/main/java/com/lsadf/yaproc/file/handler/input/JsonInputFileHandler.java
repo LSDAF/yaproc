@@ -20,8 +20,8 @@ import java.util.Arrays;
  */
 public class JsonInputFileHandler implements InputFileHandler {
 
-  private InputFileHandler nextHandler;
   private final JsonMapper jsonMapper;
+  private InputFileHandler nextHandler;
 
   public JsonInputFileHandler() {
     this.jsonMapper = new JsonMapper();
@@ -47,6 +47,7 @@ public class JsonInputFileHandler implements InputFileHandler {
     return nextHandler.handleFile(fileData);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void setNextHandler(InputFileHandler nextHandler) {
     this.nextHandler = nextHandler;
