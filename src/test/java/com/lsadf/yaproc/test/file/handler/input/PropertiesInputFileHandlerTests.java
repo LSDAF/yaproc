@@ -45,7 +45,6 @@ class PropertiesInputFileHandlerTests {
     // When
     ContentMap contentMap = handler.handleFile(fileData);
 
-
     // Then
     assertThat(contentMap)
         .isNotNull()
@@ -81,4 +80,16 @@ class PropertiesInputFileHandlerTests {
     assertThrows(UnsupportedFileFormatException.class, () -> handler.handleFile(fileData));
   }
 
+  /**
+   * Tests that the handler throws an IOException when given a malformed properties file. This
+   * validates that the system correctly detects and reports formatting errors in properties files.
+   */
+  @Test
+  void shouldThrowExceptionForMalformedPropertiesFile() throws IOException {
+    // Given
+    FileData fileData = FileUtils.readFile(new File("target/test-data/inputs/malformed/malformed.properties"));
+
+    // When & Then
+    assertThrows(IOException.class, () -> handler.handleFile(fileData));
+  }
 }

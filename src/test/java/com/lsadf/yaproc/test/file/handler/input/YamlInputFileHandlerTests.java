@@ -119,4 +119,17 @@ class YamlInputFileHandlerTests {
     // When & Then
     assertThrows(UnsupportedFileFormatException.class, () -> handler.handleFile(fileData));
   }
+
+  /**
+   * Tests that the handler throws an exception when given a malformed YAML file. This validates
+   * that the system correctly detects and reports formatting errors in YAML files.
+   */
+  @Test
+  void shouldThrowExceptionForMalformedYamlFile() throws IOException {
+    // Given
+    FileData fileData = FileUtils.readFile(new File("target/test-data/inputs/malformed/malformed.yaml"));
+
+    // When & Then
+    assertThrows(IOException.class, () -> handler.handleFile(fileData));
+  }
 }

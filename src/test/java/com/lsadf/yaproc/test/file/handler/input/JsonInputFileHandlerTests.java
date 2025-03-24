@@ -56,7 +56,9 @@ class JsonInputFileHandlerTests {
     assertThat(firstObject).hasSize(1).containsEntry("index", 0);
 
     Map<String, Object> secondObject = (Map<String, Object>) objectArray.get(1);
-    assertThat(secondObject).containsEntry("index", 1).containsEntry("another_final_property", "TEST");
+    assertThat(secondObject)
+        .containsEntry("index", 1)
+        .containsEntry("another_final_property", "TEST");
   }
 
   @Test
@@ -67,5 +69,15 @@ class JsonInputFileHandlerTests {
 
     // When & Then
     assertThrows(UnsupportedFileFormatException.class, () -> handler.handleFile(fileData));
+  }
+
+  @Test
+  void shouldThrowExceptionForInvalidJsonContent() throws IOException {
+    // Given
+    FileData fileData =
+        FileUtils.readFile(new File("target/test-data/inputs/malformed/malformed.json"));
+
+    // When & Then
+    assertThrows(IOException.class, () -> handler.handleFile(fileData));
   }
 }
