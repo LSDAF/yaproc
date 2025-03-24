@@ -24,7 +24,7 @@
         <connection/>
         <developerConnection/>
         <tag/>
-        <url/>
+        <url>https://github.com/LSDAF/yaproc</url>
     </scm>
     <properties>
         <java.version>17</java.version>
@@ -125,6 +125,18 @@
                 <configuration>
                     <finalName>yaproc</finalName>
                     <mainClass>com.lsadf.yaproc.YaprocApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Git-Link>${project.scm.url}</Git-Link>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
