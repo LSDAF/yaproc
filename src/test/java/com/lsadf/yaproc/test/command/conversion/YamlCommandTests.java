@@ -14,6 +14,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class YamlCommandTests {
 
+  private static final String YAML = "yaml";
+
   /**
    * Cleans the default output directory before each test execution. This helps ensure that the test
    * environment is in a clean state by removing any previously generated files or artifacts in the
@@ -41,12 +43,12 @@ class YamlCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"yaml"});
+              YaprocApplication.main(new String[] {YAML});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
-      // Verify no output was created
-      assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
+    // Verify no output was created
+    assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
   }
 
   /**
@@ -58,12 +60,12 @@ class YamlCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"yaml", "test.properties"});
+              YaprocApplication.main(new String[] {YAML, "test.properties"});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
-      // Verify no output was created
-      assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
+    // Verify no output was created
+    assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
   }
 
   /**
@@ -75,12 +77,12 @@ class YamlCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"yaml", "-f", "test.properties"});
+              YaprocApplication.main(new String[] {YAML, "-f", "test.properties"});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
-      // Verify no output was created
-      assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
+    // Verify no output was created
+    assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
   }
 
   /**
@@ -94,15 +96,15 @@ class YamlCommandTests {
             () -> {
               YaprocApplication.main(
                   new String[] {
-                    "yaml",
+                    YAML,
                     "target/test-data/inputs/nonexisting.properties",
                     "target/test-data/outputs/test.yml"
                   });
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.SOFTWARE);
-      // Verify no output was created
-      assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
+    // Verify no output was created
+    assertThat(Files.exists(Paths.get("target/test-data/outputs"))).isFalse();
   }
 
   /**
@@ -116,7 +118,7 @@ class YamlCommandTests {
             () -> {
               YaprocApplication.main(
                   new String[] {
-                    "yaml",
+                    YAML,
                     "target/test-data/inputs/test.properties",
                     "target/test-data/outputs/test_output.yml",
                     "-fdv"
@@ -124,7 +126,29 @@ class YamlCommandTests {
             });
 
     assertThat(status).isZero();
-      // Verify no output was created
-      assertThat(Files.exists(Paths.get("target/test-data/outputs/test_output.yml"))).isTrue();
+    // Verify no output was created
+    assertThat(Files.exists(Paths.get("target/test-data/outputs/test_output.yml"))).isTrue();
+  }
+
+  /**
+   * Tests the YAML command's behavior when processing a malformed YAML file. This test verifies
+   * that the command properly handles invalid YAML syntax and returns an appropriate error code.
+   *
+   * @throws Exception if there is an unexpected error during test execution
+   */
+  @Test
+  void testYamlCommandWithMalformedYamlInput() throws Exception {
+    String inputPath = "target/test-data/inputs/malformed/malformed.yaml";
+    String outputPath = "target/test-data/outputs/test_output.yaml";
+
+    int status =
+        SystemLambda.catchSystemExit(
+            () -> {
+              YaprocApplication.main(new String[] {YAML, inputPath, outputPath});
+            });
+
+    assertThat(status).isEqualTo(CommandLine.ExitCode.SOFTWARE);
+    // Verify that no output file was created due to the error
+    assertThat(Files.exists(Paths.get(outputPath))).isFalse();
   }
 }

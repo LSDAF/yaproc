@@ -105,4 +105,26 @@ class JsonCommandTests {
     // Verify the output file exists
     assertThat(Files.exists(Paths.get("target/test-data/outputs/test_output.json"))).isTrue();
   }
+
+  /**
+   * Tests the JSON command's behavior when processing a malformed JSON file. This test verifies
+   * that the command properly handles invalid JSON syntax and returns an appropriate error code.
+   *
+   * @throws Exception if there is an unexpected error during test execution
+   */
+  @Test
+  void testJsonCommandWithMalformedJsonInput() throws Exception {
+    String inputPath = "target/test-data/inputs/malformed/malformed.json";
+    String outputPath = "target/test-data/outputs/test_output.json";
+
+    int status =
+        SystemLambda.catchSystemExit(
+            () -> {
+              YaprocApplication.main(new String[] {JSON, inputPath, outputPath});
+            });
+
+    assertThat(status).isEqualTo(CommandLine.ExitCode.SOFTWARE);
+    // Verify that no output file was created due to the error
+    assertThat(Files.exists(Paths.get(outputPath))).isFalse();
+  }
 }

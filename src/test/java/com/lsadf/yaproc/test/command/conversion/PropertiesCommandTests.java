@@ -18,6 +18,8 @@ import picocli.CommandLine;
  */
 class PropertiesCommandTests {
 
+  private static final String PROPERTIES = "properties";
+
   /**
    * Cleans the default output directory before each test execution. This helps ensure that the test
    * environment is in a clean state by removing any previously generated files or artifacts in the
@@ -45,7 +47,7 @@ class PropertiesCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"properties"});
+              YaprocApplication.main(new String[] {PROPERTIES});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
@@ -63,7 +65,7 @@ class PropertiesCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"properties", "test.json"});
+              YaprocApplication.main(new String[] {PROPERTIES, "test.json"});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
@@ -81,7 +83,7 @@ class PropertiesCommandTests {
     int status =
         SystemLambda.catchSystemExit(
             () -> {
-              YaprocApplication.main(new String[] {"properties", "-f", "test.json"});
+              YaprocApplication.main(new String[] {PROPERTIES, "-f", "test.json"});
             });
 
     assertThat(status).isEqualTo(CommandLine.ExitCode.USAGE);
@@ -101,7 +103,7 @@ class PropertiesCommandTests {
             () -> {
               YaprocApplication.main(
                   new String[] {
-                    "properties", "target/test-data/nonexisting.json", "test.properties"
+                    PROPERTIES, "target/test-data/nonexisting.json", "test.properties"
                   });
             });
 
@@ -122,7 +124,7 @@ class PropertiesCommandTests {
             () -> {
               YaprocApplication.main(
                   new String[] {
-                    "properties",
+                    PROPERTIES,
                     "target/test-data/inputs/test.json",
                     "target/test-data/outputs/test_output.properties",
                     "-fdv"
@@ -132,5 +134,28 @@ class PropertiesCommandTests {
     assertThat(status).isZero();
     // Verify the output file exists
     assertThat(Files.exists(Paths.get("target/test-data/outputs/test_output.properties"))).isTrue();
+  }
+
+  /**
+   * Tests the properties command behavior when processing a malformed properties file. This test
+   * verifies that the command properly handles invalid properties syntax and returns an appropriate
+   * error code.
+   *
+   * @throws Exception if there is an unexpected error during test execution
+   */
+  @Test
+  void testPropertiesCommandWithMalformedPropertiesInput() throws Exception {
+    String inputPath = "target/test-data/inputs/malformed/malformed.properties";
+    String outputPath = "target/test-data/outputs/test_output.properties";
+
+    int status =
+        SystemLambda.catchSystemExit(
+            () -> {
+              YaprocApplication.main(new String[] {PROPERTIES, inputPath, outputPath});
+            });
+
+    assertThat(status).isEqualTo(CommandLine.ExitCode.SOFTWARE);
+    // Verify that no output file was created due to the error
+    assertThat(Files.exists(Paths.get(outputPath))).isFalse();
   }
 }
