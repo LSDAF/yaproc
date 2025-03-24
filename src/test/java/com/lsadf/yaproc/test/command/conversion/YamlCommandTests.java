@@ -121,7 +121,7 @@ class YamlCommandTests {
                     YAML,
                     "target/test-data/inputs/test.properties",
                     "target/test-data/outputs/test_output.yml",
-                    "-fdv"
+                    "-fd"
                   });
             });
 

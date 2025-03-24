@@ -96,7 +96,7 @@ class ConcatCommandTests {
                     "target/test-data/outputs/concatenated.properties",
                     "target/test-data/inputs/test1.properties",
                     "target/test-data/inputs/test2.properties",
-                    "-fdv"
+                    "-fd"
             });
         });
 
@@ -116,7 +116,7 @@ class ConcatCommandTests {
                     "target/test-data/inputs/test1.properties",
                     "target/test-data/inputs/test2.properties",
                     "target/test-data/inputs/test3.properties",
-                    "-fdv"
+                    "-fd"
             });
         });
 

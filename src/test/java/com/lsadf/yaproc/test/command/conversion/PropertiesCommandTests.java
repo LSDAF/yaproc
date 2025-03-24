@@ -127,7 +127,7 @@ class PropertiesCommandTests {
                     PROPERTIES,
                     "target/test-data/inputs/test.json",
                     "target/test-data/outputs/test_output.properties",
-                    "-fdv"
+                    "-fd"
                   });
             });
 
