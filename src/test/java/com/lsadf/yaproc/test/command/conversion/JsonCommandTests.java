@@ -97,7 +97,7 @@ class JsonCommandTests {
                     JSON,
                     "target/test-data/inputs/test.properties",
                     "target/test-data/outputs/test_output.json",
-                    "-fdv"
+                    "-fd"
                   });
             });
 

@@ -5,7 +5,6 @@ import com.lsadf.yaproc.exception.UnsupportedFileFormatException;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileData;
 import com.lsadf.yaproc.file.FileFormat;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -16,8 +15,8 @@ import java.util.Arrays;
  * an {@link UnsupportedFileFormatException} is thrown when processing unsupported formats.
  */
 public class YamlInputFileHandler implements InputFileHandler {
-  private InputFileHandler next;
   private final YAMLMapper yamlMapper;
+  private InputFileHandler next;
 
   public YamlInputFileHandler() {
     this.yamlMapper = new YAMLMapper();
@@ -42,6 +41,7 @@ public class YamlInputFileHandler implements InputFileHandler {
     return next.handleFile(fileData);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void setNextHandler(InputFileHandler nextHandler) {
     this.next = nextHandler;

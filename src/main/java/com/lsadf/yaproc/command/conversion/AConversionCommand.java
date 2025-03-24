@@ -6,11 +6,10 @@ import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileData;
 import com.lsadf.yaproc.util.FileUtils;
 import com.lsadf.yaproc.util.ValidationUtils;
-import picocli.CommandLine;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import picocli.CommandLine;
 
 public abstract class AConversionCommand extends ACommand<File> implements YaprocCommand<File> {
 
@@ -24,9 +23,7 @@ public abstract class AConversionCommand extends ACommand<File> implements Yapro
   public Integer call() throws Exception {
     try {
       init();
-      if (verbose || debug) {
-        getLogger().info("Initializing command...");
-      }
+      getLogger().debug("Initializing command...");
 
       // Check if input exists
       if (!input.exists()) {
@@ -35,39 +32,25 @@ public abstract class AConversionCommand extends ACommand<File> implements Yapro
 
       // get input extension
       String inputExtension = FileUtils.getFileExtension(input);
-      if (debug) {
-        getLogger().info("Input file extension: " + inputExtension);
-      }
+      getLogger().debug("Input file extension: {}", inputExtension);
 
       // if input extension is not supported, throw an exception
       ValidationUtils.validateFileFormat(inputExtension);
-      if (verbose || debug) {
-        getLogger().info("File format validation successful");
-      }
+      getLogger().debug("File format validation successful");
 
       FileData fileData = FileUtils.readFile(input);
-      if (debug) {
-        getLogger().info("Read input file: " + input);
-        getLogger().info("File content length: " + fileData.getContent().length());
-      }
+      getLogger().debug("Read input file: {}", input);
+      getLogger().debug("File content length: {}", fileData.getContent().length());
 
       ContentMap fileContent = inputFileHandler.handleFile(fileData);
-      if (debug) {
-        getLogger().info("Processed input file. Content map size: " + fileContent.size());
-      }
+      getLogger().debug("Processed input file. Content map size: {}", fileContent.size());
 
       outputFileHandler.handleFile(output, fileContent, isForce());
-      if (verbose || debug) {
-        getLogger().info("Successfully wrote output to: " + output);
-      }
+      getLogger().debug("Successfully wrote output to: {}", output);
 
       return 0;
     } catch (Exception e) {
-      if (debug) {
-        getLogger().severe(e.getMessage());
-      } else if (verbose) {
-        getLogger().severe("Error: " + e.getMessage());
-      }
+      getLogger().error(e.getMessage());
       throw e;
     }
   }
@@ -84,6 +67,7 @@ public abstract class AConversionCommand extends ACommand<File> implements Yapro
 
   @Override
   public void init() {
+    super.init();
     this.input = parameters.get(0);
     this.output = parameters.get(1);
   }

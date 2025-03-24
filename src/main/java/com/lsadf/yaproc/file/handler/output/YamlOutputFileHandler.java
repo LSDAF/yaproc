@@ -5,7 +5,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.lsadf.yaproc.file.ContentMap;
 import com.lsadf.yaproc.file.FileFormat;
 import com.lsadf.yaproc.util.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -47,6 +46,7 @@ public class YamlOutputFileHandler implements OutputFileHandler {
     FileUtils.writeFile(outputFile, yamlContent, force);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void setNextHandler(OutputFileHandler nextHandler) {
     this.nextHandler = nextHandler;

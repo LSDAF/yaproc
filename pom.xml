@@ -24,15 +24,19 @@
         <connection/>
         <developerConnection/>
         <tag/>
-        <url/>
+        <url>https://github.com/LSDAF/yaproc</url>
     </scm>
     <properties>
         <java.version>17</java.version>
         <picocli.version>4.7.6</picocli.version>
+        <spring-boot-maven-plugin.version>3.4.4</spring-boot-maven-plugin.version>
         <commons-io.version>2.18.0</commons-io.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
         <snakeyaml.version>2.4</snakeyaml.version>
         <junit.version>5.11.4</junit.version>
+        <assertj.version>3.26.3</assertj.version>
         <junit5-system-exit.version>2.0.2</junit5-system-exit.version>
+        <system-lambda.version>1.2.1</system-lambda.version>
     </properties>
 
     <dependencyManagement>
@@ -47,7 +51,7 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-bom</artifactId>
-                <version>3.26.3</version>
+                <version>${assertj.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -58,17 +62,21 @@
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>4.7.1</version>
+            <version>${picocli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -91,38 +99,45 @@
         <dependency>
             <groupId>com.github.stefanbirkner</groupId>
             <artifactId>system-lambda</artifactId>
-            <version>1.2.1</version>
+            <scope>test</scope>
+            <version>${system-lambda.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven-plugin.version}</version>  <!-- Use the latest compatible version -->
                 <executions>
                     <execution>
-                        <id>package-app</id>
-                        <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>repackage</goal>
                         </goals>
-                        <configuration>
-                            <finalName>yaproc</finalName>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.lsadf.yaproc.YaprocApplication</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <finalName>yaproc</finalName>
+                    <mainClass>com.lsadf.yaproc.YaprocApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Git-Link>${project.scm.url}</Git-Link>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>

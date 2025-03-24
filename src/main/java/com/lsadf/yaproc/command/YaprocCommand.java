@@ -2,15 +2,14 @@ package com.lsadf.yaproc.command;
 
 import com.lsadf.yaproc.file.handler.input.InputFileHandler;
 import com.lsadf.yaproc.file.handler.output.OutputFileHandler;
-import picocli.CommandLine;
-
 import java.io.File;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import picocli.CommandLine;
 
 /**
- * Interface representing a command in the Yaproc application.
- * All commands must implement this interface to ensure consistency.
+ * Interface representing a command in the Yaproc application. All commands must implement this
+ * interface to ensure consistency.
  */
 public interface YaprocCommand<I> extends Callable<Integer> {
 
@@ -45,16 +44,10 @@ public interface YaprocCommand<I> extends Callable<Integer> {
   /**
    * Indicates whether the force option is enabled.
    *
-   * @return {@code true} if the operation should overwrite existing content, {@code false} otherwise
+   * @return {@code true} if the operation should overwrite existing content, {@code false}
+   *     otherwise
    */
   boolean isForce();
-
-  /**
-   * Indicates whether verbose logging is enabled.
-   *
-   * @return {@code true} if verbose mode is active, {@code false} otherwise
-   */
-  boolean isVerbose();
 
   /**
    * Indicates whether debugging mode is enabled.
@@ -63,27 +56,22 @@ public interface YaprocCommand<I> extends Callable<Integer> {
    */
   boolean isDebug();
 
-  /**
-   * Initializes the command, setting up any required resources or configurations.
-   */
+  /** Initializes the command, setting up any required resources or configurations. */
   void init();
 
-
   /**
-   * Gets the input file handler associated with this command.
-   * The input file handler is responsible for processing input files and converting them into a usable format.
+   * Gets the input file handler associated with this command. The input file handler is responsible
+   * for processing input files and converting them into a usable format.
    *
    * @return an {@link InputFileHandler} instance specific to the command
    */
   InputFileHandler getInputFileHandler();
 
   /**
-   * Gets the output file handler associated with this command.
-   * The output file handler is responsible for generating and writing the processed output file from the command execution.
+   * Gets the output file handler associated with this command. The output file handler is
+   * responsible for generating and writing the processed output file from the command execution.
    *
    * @return an {@link OutputFileHandler} instance specific to the command
    */
   OutputFileHandler getOutputFileHandler();
-
-
 }
