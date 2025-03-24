@@ -5,7 +5,8 @@
         "index": 0
       },
       {
-        "index": 1
+        "index": 1,
+        "another_final_property": "TEST"
       }
     ],
     "another_property": "Test"
